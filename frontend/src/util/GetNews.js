@@ -1,15 +1,18 @@
 import Axios from 'axios'
 import { useState } from 'react'
 import Card from '@material-ui/core/Card';
-import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
-import { classExpression } from '@babel/types';
+import CardMedia from '@material-ui/core/CardMedia'
+import {ImageList, ImageListItem} from '@material-ui/core'
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
+import Divider from '@material-ui/core/Divider';
+
 
 const useStyles = makeStyles({
     title: {
-        fontSize: 14,
+        fontSize: 15,
+        textAlign: "left",
     },
     card: {
         width: "90%",
@@ -29,9 +32,11 @@ const useStyles = makeStyles({
 
 const GetNews = () => {
     const value = 'IBM'
-    const urlApi = 'https://content.guardianapis.com/search?section=business&order-by=relevance&q=' + value + '&api-key=fbd25144-951c-40ac-8dfa-63fdd9a1eb06'
+    const urlApi = 'https://content.guardianapis.com/search?section=business&order-by=relevance&q=' + value +  '&show-fields=thumbnail&api-key=fbd25144-951c-40ac-8dfa-63fdd9a1eb06'
     const titles = []
+    const images = []
     const [title, setTitle] = useState() 
+    const [thumbnails, setThumbnails] = useState()
 
     /// get data from guarian API and return 10 results sorted by relevance over the last year ///
     const fetchData = async() => {
@@ -40,27 +45,36 @@ const GetNews = () => {
             const results = res.data.response['results']
             for (var i = 0; i < results.length; i++) {
                 titles.push(results[i].webTitle)
+                images.push(results[i].fields.thumbnail)
             }
         })
+        setThumbnails(images)
         setTitle(titles)
-        console.log(titles)
+        //console.log(title)
     }
+
     
     const classes = useStyles()
     if (title){
         return(
             <div>
                 <Card className={classes.cardContainer} overflow="auto">
-                    <h3>Headlines</h3>
-                    {title.map((headline) => 
-                    <Card className={classes.card}>
-                        <CardContent>
-                            <Typography className={classes.title}>
-                                {headline}
-                            </Typography>
-                        </CardContent>
-                    </Card>
+                    <Typography variant="h5">Headlines</Typography>
+                    <Divider/>
+                    {title.map((headline) => { 
+                        return(
+                        <div>
+                            <CardContent>
+                                <Typography className={classes.title}>
+                                    {headline}
+                                </Typography>
+                                <Divider/>
+                            </CardContent>
+                        </div>
+                        )
+                    }
                     )}
+                    
                 </Card>
 
             </div>

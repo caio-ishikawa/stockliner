@@ -2,24 +2,32 @@ import Axios from 'axios';
 import { Line } from 'react-chartjs-2'
 import { useState } from 'react'
 import Card from '@material-ui/core/Card';
-import CardActions from '@material-ui/core/CardActions';
-import CardContent from '@material-ui/core/CardContent'
+import {makeStyles} from "@material-ui/core/styles"; 
+import ApexCharts from 'apexcharts'
+import ReactApexChart from 'apexcharts'
+
+const styles = makeStyles({
+    container:{
+        backgroundColor: "white",
+        padding: "2%"
+    }
+})
 
 const GetData = () => {
-    const apiKey = 'DWK7LDWIV19Q5J86';
+    ///const apiKey = 'DWK7LDWIV19Q5J86';
     const value = 'IBM';
     const apiUrl = 'https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=' + value + '&apikey=' + 'demo'
     const closeList = []
     const dateList = []
     const [closePrice, setClosePrice] = useState()
     const [dates, setDates] = useState()
+    const classes = styles()
 
     /// gets close price and pushses to const closeList ///
     const getPrices = async () => {
         await Axios.get(apiUrl)
         .then((res) => {
             const timeSeries = res.data["Time Series (Daily)"]
-            console.log(timeSeries)
             Object.keys(timeSeries).forEach((key) => {
                 const list = timeSeries[key.toString()]
                 const list2 = list["4. close"]
@@ -31,43 +39,39 @@ const GetData = () => {
             localStorage.setItem('dateList2', JSON.stringify(dates))
         })
         setClosePrice(closeList.reverse())
-        setDates(dateList)
+        setDates(dateList[0].reverse())
     }
 
     if (closePrice){
         if (dates){
+
             const data = {
-                labels: dates[0].reverse(),
-                datasets: [
-                    {
-                        label: "IBM",
-                        data: closePrice,
-                        fill: false,
-                        backgroundColor: 'rgb(255, 99, 132)',
-                        borderColor: 'rgba(255, 99, 132, 0.2)',
-                    }
-                ]
-            };
+                labels: dates,
+                datasets: [{
+                    label: "IBM",
+                    data: closePrice,
+                    fill: false,
+                    background: '#4D9DE0',
+                    backgroundColor: "#26C485",
+                    borderColor: '#26C485'
+                }]
+            }
             const options = {
                 scales: {
-                    yAxes: [
-                        {
-                            ticks: {
-                                beginAtZero: false
-                            }
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: false
                         }
-                    ]
+                    }]
                 },
                 maintainAspectRatio: false
-            };
-            console.log(dates)
-            console.log(closePrice)
+            }
+            
             return(
                 <div>
-                    <Card>
-                        <Line data={data} options={options} height={350}/>
+                    <Card className={classes.container}>
+                        <Line data={data} options={options} height={350} />
                     </Card>
-                    <p>there's data</p>
                 </div>
             )
         }else{
