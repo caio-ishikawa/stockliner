@@ -1,10 +1,13 @@
 import logo from './logo.svg';
 import './App.css';
 import GetData from './util/GetData'
-import PlotData from './util/PlotData'
 import GetNews from './util/GetNews'
+import GetFinanceData from './components/GetFinanceData'
+import Homepage from './pages/Homepage'
+import ResultPage from './pages/ResultPage'
 import {Toolbar, Typography, Container, Grid } from '@material-ui/core'
 import {makeStyles} from "@material-ui/core/styles"; 
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
 const styles = makeStyles({
   container: {
@@ -22,6 +25,9 @@ const styles = makeStyles({
   },
   uicontainer: {
     margin: "auto"
+  },
+  bottomBox: {
+    float: "left"
   }
 })
 
@@ -30,21 +36,10 @@ function App() {
 
   return (
     <div className="App">
-      <p>test</p>
-      <div id="charts">
-        test22
-      </div>
-      <button onClick={GetData}>get data</button>
-      <div className={classes.uicontainer}>
-        <Grid container spacing={2} justify="center">
-          <Grid item xs={12} md={7} lg={5}>
-            <PlotData/>
-          </Grid>
-          <Grid item xs={12} md={4} lg={5}>
-            <GetNews/>
-          </Grid>
-        </Grid>
-      </div>
+      <Router>
+        <Route exact path="/" component={Homepage}/>
+        <Route path="/results" component={ResultPage}/>
+      </Router>
     </div>
   );
 }

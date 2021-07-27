@@ -13,7 +13,7 @@ const useStyles = makeStyles({
     },
     card: {
         width: "90%",
-        margin: "auto"
+        margin: "2% auto 0 auto"
     },
     cardContainer: {
         width: "100%",
@@ -21,9 +21,11 @@ const useStyles = makeStyles({
         height: "40%",
         overflow: "auto",
         maxHeight: "600px"
+    },
+    news: {
+        marginTop: "2%",
     }
 })
-
 
 const GetNews = () => {
     const value = 'IBM'
@@ -31,12 +33,11 @@ const GetNews = () => {
     const titles = []
     const [title, setTitle] = useState() 
 
-
+    /// get data from guarian API and return 10 results sorted by relevance over the last year ///
     const fetchData = async() => {
         await Axios.get(urlApi)
         .then((res) => {
             const results = res.data.response['results']
-            //console.log(results)
             for (var i = 0; i < results.length; i++) {
                 titles.push(results[i].webTitle)
             }
@@ -45,12 +46,10 @@ const GetNews = () => {
         console.log(titles)
     }
     
-    
     const classes = useStyles()
     if (title){
         return(
             <div>
-                <br></br>
                 <Card className={classes.cardContainer} overflow="auto">
                     <h3>Headlines</h3>
                     {title.map((headline) => 
@@ -67,20 +66,13 @@ const GetNews = () => {
             </div>
         )
     } else{
+        fetchData()
         return(
             <div>
                 <p>no title</p>
-                <button onClick={fetchData}>fetch data</button>
             </div>
         )
     }
-    // return(
-    //     <div>
-    //         <p>test</p>
-    //         <button onClick={fetchData}>fetch data</button>
-    //         <ul>{title}</ul>
-    //     </div>
-    // )
 }
 
 export default GetNews
