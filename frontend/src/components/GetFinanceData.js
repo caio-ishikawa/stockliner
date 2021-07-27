@@ -4,6 +4,7 @@ import { useState } from 'react'
 import {makeStyles} from "@material-ui/core/styles"; 
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
+import { useHistory } from "react-router-dom";
 
 
 const styles = makeStyles({
@@ -21,20 +22,24 @@ const styles = makeStyles({
         borderColor: "white"
     },
     card: {
-        backgroundColor: "#FDFFFC",
+        backgroundColor: "#FBFBFB",
     }
 })
 
 const FindFinanceData = () => {
-    const urlApi = 'https://financialmodelingprep.com/api/v3/financial-growth/AAPL?limit=20&apikey=055644b754df26be01f9083226a98784'
+    const history = useHistory()
+    const searchValue = history.location.state
+    const urlApi = 'https://financialmodelingprep.com/api/v3/financial-growth/' + 'IBM' + '?limit=20&apikey=055644b754df26be01f9083226a98784'
     const [financeData, setFinanceData ] = useState()
 
     /// get data from FMP API and return latest financial growth statistics ///
     const getData = async () => {
+        console.log('finance news')
         Axios.get(urlApi)
             .then((res) => {
                 const data = res.data
                 setFinanceData(data[0])
+                console.log(res)
             }
         )
     }

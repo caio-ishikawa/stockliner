@@ -5,6 +5,8 @@ import GetNews from './util/GetNews'
 import GetFinanceData from './components/GetFinanceData'
 import Homepage from './pages/Homepage'
 import ResultPage from './pages/ResultPage'
+import NavBar from './components/NavBar'
+import Drawer from './components/Drawer'
 import {Toolbar, Typography, Container, Grid } from '@material-ui/core'
 import {makeStyles} from "@material-ui/core/styles"; 
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
@@ -36,6 +38,7 @@ function App() {
 
   return (
     <div className="App">
+      <NavBar/>
       <Router>
         <Route exact path="/" component={Homepage}/>
         <Route path="/results" component={ResultPage}/>
