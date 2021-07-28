@@ -30,11 +30,11 @@ const ResultPage = () => {
             <CssBaseline />
             <p>results page</p>
             <Grid container spacing={2} justify="center" >
-                <Grid item xs={12} md={6} lg={5}>
+                <Grid item xs={11} md={6} lg={5}>
                     <GetData className={classes.accordion}/>
                     <GetFinanceData/>
                 </Grid>
-                <Grid item xs={12} md={6} lg={5}>
+                <Grid item xs={11} md={6} lg={5}>
                     <GetNews/>
                 </Grid>
             </Grid>

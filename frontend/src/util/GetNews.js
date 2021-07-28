@@ -1,9 +1,7 @@
 import Axios from 'axios'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
-import CardMedia from '@material-ui/core/CardMedia'
-import {ImageList, ImageListItem} from '@material-ui/core'
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Divider from '@material-ui/core/Divider';
@@ -33,34 +31,38 @@ const useStyles = makeStyles({
 })
 
 const GetNews = () => {
-    const value = 'IBM'
     const history = useHistory()
     const searchValue = history.location.state
-    const url = null
-    const urlApi = 'https://content.guardianapis.com/search?section=business&order-by=relevance&q=' + value +  '&show-fields=thumbnail&api-key=fbd25144-951c-40ac-8dfa-63fdd9a1eb06'
     const titles = []
-    const images = []
     const [title, setTitle] = useState() 
-    const [thumbnails, setThumbnails] = useState()
+    const [name, setName] = useState()
+    const tickerName = [] 
 
+    useEffect(() => {
+        Axios.get('https://www.alphavantage.co/query?function=OVERVIEW&symbol=' + searchValue + '&apikey=DWK7LDWIV19Q5J86')
+            .then((res) => {
+                if (res) {
+                const data = res.data.Name
+                const stockName = data.substring(0, data.indexOf(','))
+                tickerName.push(stockName)
+                console.log(tickerName[0])
+                } else {
+                    console.log('no response from alpha vantage')
+                }
+            })
+            .then((response) => {
+                Axios.get('https://content.guardianapis.com/search?section=business&q=' + tickerName + '&api-key=fbd25144-951c-40ac-8dfa-63fdd9a1eb06')
+                .then((data) => {
+                    console.log(tickerName)
+                    const results = data.data.response['results']
+                    for (var i = 0; i < results.length; i++) {
+                        titles.push(results[i].webTitle)
+                    }
+                    setTitle(titles)
+                })
+            })
+    },[])
 
-
-    /// get data from guarian API and return 10 results sorted by relevance over the last year ///
-    const fetchData = async() => {
-        await Axios.get(urlApi)
-        .then((res) => {
-            const results = res.data.response['results']
-            for (var i = 0; i < results.length; i++) {
-                titles.push(results[i].webTitle)
-                images.push(results[i].fields.thumbnail)
-            }
-        })
-        setThumbnails(images)
-        setTitle(titles)
-        //console.log(title)
-    }
-
-    
     const classes = useStyles()
     if (title){
         return(
@@ -87,7 +89,7 @@ const GetNews = () => {
             </div>
         )
     } else{
-        fetchData()
+        //fetchData()
         return(
             <div>
                 <p>no title</p>
