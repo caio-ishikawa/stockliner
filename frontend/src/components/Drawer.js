@@ -12,7 +12,7 @@ const styles = makeStyles({
         width:  250,
     },
     menu: {
-        background: '#2A2B2E'
+        background: '#2B2D42'
     }
 })
 

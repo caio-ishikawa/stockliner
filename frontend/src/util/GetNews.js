@@ -23,7 +23,10 @@ const useStyles = makeStyles({
         height: "40%",
         overflow: "auto",
         maxHeight: "600px",
-        backgroundColor: "#FBFBFB"
+        backgroundColor: "#FFFFFA"
+    },
+    cardChild: {
+        marginTop: "1%"
     },
     news: {
         marginTop: "2%",
@@ -43,15 +46,27 @@ const GetNews = () => {
             .then((res) => {
                 if (res) {
                 const data = res.data.Name
-                const stockName = data.substring(0, data.indexOf(','))
-                tickerName.push(stockName)
-                console.log(tickerName[0])
+                console.log(data)
+                for (var i = 0; i < data.length; i++ ) {
+                    if (data[i] === ' '){
+                        const stockName = data.substring(0, data.indexOf(' '))
+                        if (stockName != ''){
+                            tickerName.push(stockName)
+                        }
+                    } else {
+                        const stockName = data.substring(0, data.indexOf(','))
+                        if (stockName != ''){
+                            tickerName.push(stockName)
+                        }
+                    }
+                }
+                console.log(tickerName)
                 } else {
                     console.log('no response from alpha vantage')
                 }
             })
             .then((response) => {
-                Axios.get('https://content.guardianapis.com/search?section=business&q=' + tickerName + '&api-key=fbd25144-951c-40ac-8dfa-63fdd9a1eb06')
+                Axios.get('https://content.guardianapis.com/search?section=business&q=' + tickerName[0] + '&api-key=fbd25144-951c-40ac-8dfa-63fdd9a1eb06')
                 .then((data) => {
                     console.log(tickerName)
                     const results = data.data.response['results']
@@ -67,29 +82,28 @@ const GetNews = () => {
     if (title){
         return(
             <div>
-                <Card className={classes.cardContainer} overflow="auto">
+                <Card className={classes.cardContainer} overflow="auto" elevation={6}>
                     <Typography variant="h5">Headlines</Typography>
                     <Divider/>
                     {title.map((headline) => { 
                         return(
-                        <div>
-                            <CardContent>
-                                <Typography className={classes.title}>
-                                    {headline}
-                                </Typography>
+                            <div>
+                                <Card className={classes.cardChild} elevation={0}>
+                                    <CardContent>
+                                        <Typography className={classes.title}>
+                                            {headline}
+                                        </Typography>
+                                    </CardContent>
+                                </Card>
                                 <Divider/>
-                            </CardContent>
-                        </div>
-                        )
-                    }
+                            </div>
+                            )
+                        }
                     )}
-                    
                 </Card>
-
             </div>
         )
     } else{
-        //fetchData()
         return(
             <div>
                 <p>no title</p>

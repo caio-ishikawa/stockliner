@@ -6,7 +6,7 @@ import Drawer from '../components/Drawer'
 
 const styles = makeStyles({
     root:{
-        backgroundColor: "#2A2B2E"
+        backgroundColor: "#2B2D42"
     }
 })
 

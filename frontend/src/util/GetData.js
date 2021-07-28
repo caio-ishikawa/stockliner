@@ -9,16 +9,18 @@ import { useHistory } from "react-router-dom";
 
 const styles = makeStyles({
     container:{
-        backgroundColor: "#FBFBFB",
+        backgroundColor: "#FFFFFA",
         padding: "2%"
     }
 })
 
 const GetData = () => {
     console.log('getData running')
+    const history = useHistory()
+    const searchValue = history.location.state
     const apiKey = 'DWK7LDWIV19Q5J86';
     const value = 'IBM' 
-    const apiUrl = 'https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=' + value + '&apikey=' + 'demo' 
+    const apiUrl = 'https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=' + searchValue + '&apikey=' + apiKey
     const closeList = []
     const dateList = []
     const [closePrice, setClosePrice] = useState()
@@ -26,8 +28,7 @@ const GetData = () => {
     const [ran, setRan] = useState(false)
     const classes = styles()
 
-    const history = useHistory()
-    const searchValue = history.location.state
+    
 
     /// gets close price and pushses to const closeList ///
     useEffect(() => {
@@ -56,7 +57,7 @@ const GetData = () => {
                     data: closePrice,
                     fill: true,
                     background: '#4D9DE0',
-                    backgroundColor: "rgba(38, 196, 133, 0.49)",
+                    backgroundColor: "rgba(38, 196, 133, 0.7)",
                     borderColor: '#26C485'
                 }]
             }
@@ -73,7 +74,7 @@ const GetData = () => {
 
     return(
         <div>
-            <Card className={classes.container}>
+            <Card className={classes.container} elevation={6}>
                 <Line data={data} options={options} height={350}/>
             </Card>
         </div>

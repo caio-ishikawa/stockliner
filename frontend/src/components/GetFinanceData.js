@@ -22,7 +22,7 @@ const styles = makeStyles({
         borderColor: "white"
     },
     card: {
-        backgroundColor: "#FBFBFB",
+        backgroundColor: "#FFFFFA",
     }
 })
 
@@ -50,7 +50,7 @@ const FindFinanceData = () => {
         //console.log(financeData)
         return(
                 <div className={classes.container}>
-                    <Card className={classes.card}>
+                    <Card className={classes.card} elevation={6}>
                         <CardContent>
                             <Typography color="textPrimary" className={classes.root} variant="h6">Financial Growth</Typography>
                             <hr className={classes.line}></hr>
@@ -65,8 +65,10 @@ const FindFinanceData = () => {
     } else {
         getData()
         return(
-            <div>
-                <p>loading finance data</p>
+            <div className={classes.container}>
+                <Card className={classes.card} elevation={6}>
+                    <p>loading finance data</p>
+                </Card>
             </div>
         )
     }
