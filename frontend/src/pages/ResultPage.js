@@ -2,6 +2,7 @@ import GetData from '../util/GetData'
 import GetNews from '../util/GetNews'
 import GetFinanceData from '../components/GetFinanceData'
 import CompImg from '../components/CompImg'
+import Description from '../components/Description'
 import {Grid } from '@material-ui/core'
 import {makeStyles, MuiThemeProvider, createMuiTheme} from "@material-ui/core/styles"; 
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -65,10 +66,10 @@ const ResultPage = () => {
             <Grid container spacing={2} justify="center" >
                 <Grid item xs={11} md={6} lg={5}>
                     <GetData className={classes.accordion}/>
-                    <GetFinanceData/>
                 </Grid>
                 <Grid item xs={11} md={6} lg={5}>
                     <GetNews/>
+                    <GetFinanceData/>
                 </Grid>
             </Grid>
             <Grid spacing={2} justify="left">

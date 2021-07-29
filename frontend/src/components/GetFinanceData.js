@@ -1,10 +1,12 @@
 import Axios from 'axios'
 import { Typography } from '@material-ui/core'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import {makeStyles} from "@material-ui/core/styles"; 
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import { useHistory } from "react-router-dom";
+import { Divider } from '@material-ui/core';
+import { CardHeader } from '@material-ui/core';
 
 
 const styles = makeStyles({
@@ -33,7 +35,7 @@ const FindFinanceData = () => {
     const [financeData, setFinanceData ] = useState()
 
     /// get data from FMP API and return latest financial growth statistics ///
-    const getData = async () => {
+    useEffect(() => {
         console.log('finance news')
         Axios.get(urlApi)
             .then((res) => {
@@ -42,18 +44,18 @@ const FindFinanceData = () => {
                 console.log(res)
             }
         )
-    }
+    },[])
     const classes = styles()
 
     /// if finance data exists, return finance data, otherwise return loading animation ///
-    if (financeData){
         //console.log(financeData)
+    if (financeData) {
         return(
                 <div className={classes.container}>
                     <Card className={classes.card} elevation={6}>
+                        <CardHeader title="Financial Growth"/>
+                        <Divider/>
                         <CardContent>
-                            <Typography color="textPrimary" className={classes.root} variant="h6">Financial Growth</Typography>
-                            <hr className={classes.line}></hr>
                             <Typography className={classes.root}> Asset Growth: {financeData["assetGrowth"]}</Typography>
                             <Typography className={classes.root}>Debt Growth: {financeData["debtGrowth"]}</Typography>
                             <Typography className={classes.root}>Divident Per Share Growth: {financeData["dividendsperShareGrowth"]}</Typography>
@@ -62,16 +64,16 @@ const FindFinanceData = () => {
                     </Card>
                 </div>
         )
-    } else {
-        getData()
+    } else{
+        console.log(urlApi)
         return(
-            <div className={classes.container}>
-                <Card className={classes.card} elevation={6}>
-                    <p>loading finance data</p>
-                </Card>
+            <div>
+                <p>loading finance data</p>
             </div>
         )
     }
 }
+
+
 
 export default FindFinanceData;

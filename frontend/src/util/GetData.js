@@ -28,7 +28,6 @@ const GetData = () => {
     const [ran, setRan] = useState(false)
     const classes = styles()
 
-    
 
     /// gets close price and pushses to const closeList ///
     useEffect(() => {
@@ -50,10 +49,11 @@ const GetData = () => {
             setRan(true)
         })
     }, [])
+
     const data = {
                 labels: dates,
                 datasets: [{
-                    label: "IBM",
+                    label: searchValue.toUpperCase(),
                     data: closePrice,
                     fill: true,
                     background: '#4D9DE0',

@@ -38,8 +38,8 @@ function App() {
 
   return (
     <div className="App">
-      <NavBar/>
       <Router>
+        <NavBar/>
         <Switch>
           <Route exact path="/" component={Homepage}/>
           <Route path="/results" component={ResultPage}/>

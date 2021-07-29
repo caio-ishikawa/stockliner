@@ -2,6 +2,7 @@ import Axios from 'axios'
 import { useEffect, useState } from 'react'
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
+import { CardHeader } from '@material-ui/core';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Divider from '@material-ui/core/Divider';
@@ -20,7 +21,7 @@ const useStyles = makeStyles({
     cardContainer: {
         width: "100%",
         padding: "2%",
-        height: "40%",
+        height: "570px",
         overflow: "auto",
         maxHeight: "600px",
         backgroundColor: "#FFFFFA"
@@ -47,16 +48,20 @@ const GetNews = () => {
                 if (res) {
                 const data = res.data.Name
                 console.log(data)
-                for (var i = 0; i < data.length; i++ ) {
-                    if (data[i] === ' '){
-                        const stockName = data.substring(0, data.indexOf(' '))
-                        if (stockName != ''){
-                            tickerName.push(stockName)
-                        }
-                    } else {
-                        const stockName = data.substring(0, data.indexOf(','))
-                        if (stockName != ''){
-                            tickerName.push(stockName)
+                if (data) {
+                    if (data.length > 0) {
+                        for (var i = 0; i < data.length; i++ ) {
+                            if (data[i] === ' '){
+                                const stockName = data.substring(0, data.indexOf(' '))
+                                if (stockName != ''){
+                                    tickerName.push(stockName)
+                                }
+                            } else {
+                                const stockName = data.substring(0, data.indexOf(','))
+                                if (stockName != ''){
+                                    tickerName.push(stockName)
+                                }
+                            }
                         }
                     }
                 }
@@ -83,7 +88,7 @@ const GetNews = () => {
         return(
             <div>
                 <Card className={classes.cardContainer} overflow="auto" elevation={6}>
-                    <Typography variant="h5">Headlines</Typography>
+                    <CardHeader className={classes.title} title="Headlines"/>
                     <Divider/>
                     {title.map((headline) => { 
                         return(
