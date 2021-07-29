@@ -12,6 +12,9 @@ import Drawer from './components/Drawer'
 import {Toolbar, Typography, Container, Grid } from '@material-ui/core'
 import {makeStyles} from "@material-ui/core/styles"; 
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { useContext } from 'react';
+import { LoginContext } from './components/UserContext'
+import { useState } from 'react';
 
 const styles = makeStyles({
   container: {
@@ -37,16 +40,20 @@ const styles = makeStyles({
 
 function App() {
   const classes = styles()
+  const [loggedIn, setLoggedIn] = useState(false)
+
 
   return (
     <div className="App">
       <Router>
         <NavBar/>
         <Switch>
+          <LoginContext.Provider value={{loggedIn, setLoggedIn}}>
           <Route exact path="/" component={Homepage}/>
           <Route path="/results" component={ResultPage}/>
           <Route exact path="/registration" component={Registration}/>
           <Route exact path='/login' component={Login}/> 
+          </LoginContext.Provider>
         </Switch>
       </Router>
     </div>

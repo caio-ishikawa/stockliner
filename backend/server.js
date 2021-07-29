@@ -39,6 +39,38 @@ app.post('/login', (req, res) => {
     })
 })
 
+app.post('/add_comment', (req, res) => {
+    const stock_name = req.body.stock_name;
+    const username = req.body.username
+    const content = req.body.content
+
+    db.query("INSERT INTO comment_section (stock_name, username, content) VALUE (?, ?, ?)", [stock_name, username, content], (err, result) => {
+        if (err) {
+            res.send({err: err})
+        } else{
+            if (result) {
+                res.send(result)
+            } 
+        }
+    })
+})
+
+app.get('/comment_sections', (req, res, next) => {
+    const stock_name = req.body.stock_name
+
+    db.query("SELECT * FROM comment_section", (err, result) => {
+        if (err){
+            res.send(err)
+        } else{
+            if (result){
+                console.log('result!')
+                res.send(result)
+            }
+        }
+    })
+})
+
+
 app.listen(3002, () => {
     console.log('server running on port 3002')
 })

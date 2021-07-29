@@ -9,9 +9,12 @@ import CssBaseline from "@material-ui/core/CssBaseline";
 import { Typography } from '@material-ui/core';
 import { useHistory } from 'react-router-dom';
 import Divider from '@material-ui/core/Divider';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import Axios from 'axios'
 import { SettingsOutlined } from '@material-ui/icons';
+import { LoginContext } from '../components/UserContext'
+import Chat from '../components/Chat'
+import { TextField, Button } from '@material-ui/core'
 
 
 const theme = createMuiTheme({
@@ -48,9 +51,34 @@ const ResultPage = () => {
     const history = useHistory()
     const value = history.location.state
     const searchValue = value.toUpperCase()
+    const { loggedIn, setLoggedIn } = useContext(LoginContext) 
     const classes = styles()
     const [link, setLink] = useState('')
+    const [content, setContent] = useState('')
+    const [username, setUsername] = useState('')
     var links = []; 
+
+    useEffect(() => {
+        if (searchValue.length > 0) {
+            console.log('checking comments')
+            Axios.get('http://localhost:3002/comment_sections', {stock_name: searchValue})
+            .then((res) => {
+                console.log(res)
+            })
+        }
+    },[])
+
+    const postComment = () => {
+        Axios.post("http://localhost:3002/add_comment", {
+            stock_name: searchValue,
+            username: username,
+            content:  content
+        })
+        .then((res) => {
+            console.log(res)
+        })
+    }
+
 
     return(
         <MuiThemeProvider theme={theme}>
@@ -66,6 +94,9 @@ const ResultPage = () => {
             <Grid container spacing={2} justify="center" >
                 <Grid item xs={11} md={6} lg={5}>
                     <GetData className={classes.accordion}/>
+                    <TextField onChange={(e) => {setContent(e.target.value)}} label="content"/>
+                    <TextField onChange={(e) => {setUsername(e.target.value)}} label="username"/>
+                    <Button onClick={postComment}>post</Button>
                 </Grid>
                 <Grid item xs={11} md={6} lg={5}>
                     <GetNews/>

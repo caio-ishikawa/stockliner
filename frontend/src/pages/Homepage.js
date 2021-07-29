@@ -23,6 +23,8 @@ const styles = makeStyles({
 const Homepage = () => {
     const classes = styles()
     const history = useHistory()
+    const username = history.location.state
+    console.log(username)
     const [ticker, setTicker] = useState('')
 
     const routeChange = () => {
