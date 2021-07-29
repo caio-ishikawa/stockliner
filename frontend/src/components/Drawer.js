@@ -23,27 +23,34 @@ const Drawer = () => {
     const classes= styles()
     const history = useHistory()
     return(
-                <div>
-                    <IconButton edge="start" color="inherit" aria-label="open drawer" onClick={() => setOpen(true)}>
-                        <MenuIcon></MenuIcon>
-                    </IconButton>
-                    <div>
-                        <SwipeableDrawer classes={{paper: classes.menu}} anchor="left" open={open} onClose={() => setOpen(false)} onOpen={() => {}}>
-                            <div className={classes.sidebar}>
-                                <List>
-                                    <Link to="/">
-                                        <ListItem button>
-                                            <ListItemText primary={<Typography type="body2" style={{color: 'white'}}>Home</Typography>}/>
-                                        </ListItem>
-                                    </Link>
-                                    <ListItem button>
-                                        <ListItemText primary={<Typography type="body2" style={{color: 'white'}}>Top Movers</Typography>}/>
-                                    </ListItem>
-                                </List>
-                            </div>
-                        </SwipeableDrawer>
+        <div>
+            <IconButton edge="start" color="inherit" aria-label="open drawer" onClick={() => setOpen(true)}>
+                <MenuIcon></MenuIcon>
+            </IconButton>
+            <div>
+                <SwipeableDrawer classes={{paper: classes.menu}} anchor="left" open={open} onClose={() => setOpen(false)} onOpen={() => {}}>
+                    <div className={classes.sidebar}>
+                        <List>
+                            <Link to="/">
+                                <ListItem button>
+                                    <ListItemText primary={<Typography type="body2" style={{color: 'white'}}>Home</Typography>}/>
+                                </ListItem>
+                            </Link>
+                            <Link to="/registration">
+                                <ListItem button>
+                                    <ListItemText primary={<Typography type="body2" style={{color: 'white'}}>Register</Typography>}/>
+                                </ListItem>
+                            </Link>
+                            <Link to="/login">
+                                <ListItem button>
+                                    <ListItemText primary={<Typography type="body2" style={{color: 'white'}}>Login</Typography>}/>
+                                </ListItem>
+                            </Link>
+                        </List>
                     </div>
-                </div>
+                </SwipeableDrawer>
+            </div>
+        </div>
     )
 }
 

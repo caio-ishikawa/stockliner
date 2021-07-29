@@ -5,6 +5,8 @@ import GetNews from './util/GetNews'
 import GetFinanceData from './components/GetFinanceData'
 import Homepage from './pages/Homepage'
 import ResultPage from './pages/ResultPage'
+import Registration from './pages/Registration';
+import Login from './pages/Login'
 import NavBar from './components/NavBar'
 import Drawer from './components/Drawer'
 import {Toolbar, Typography, Container, Grid } from '@material-ui/core'
@@ -43,6 +45,8 @@ function App() {
         <Switch>
           <Route exact path="/" component={Homepage}/>
           <Route path="/results" component={ResultPage}/>
+          <Route exact path="/registration" component={Registration}/>
+          <Route exact path='/login' component={Login}/> 
         </Switch>
       </Router>
     </div>

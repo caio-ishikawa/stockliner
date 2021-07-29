@@ -39,7 +39,7 @@ const GetNews = () => {
     const searchValue = history.location.state
     const titles = []
     const [title, setTitle] = useState() 
-    const [name, setName] = useState()
+    //const [name, setName] = useState()
     const tickerName = [] 
 
     useEffect(() => {
