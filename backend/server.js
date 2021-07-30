@@ -55,16 +55,19 @@ app.post('/add_comment', (req, res) => {
     })
 })
 
-app.get('/comment_sections', (req, res, next) => {
-    const stock_name = req.body.stock_name
+app.get('/comment_sections/:stock_name', (req, res, next) => {
+    const stock_name = req.params.stock_name.toString()
+    console.log(stock_name)
 
-    db.query("SELECT * FROM comment_section", (err, result) => {
+    db.query("SELECT * FROM comment_section WHERE stock_name = ?", [stock_name], (err, result) => {
         if (err){
             res.send(err)
         } else{
             if (result){
                 console.log('result!')
                 res.send(result)
+            } else {
+                console.log('no result')
             }
         }
     })

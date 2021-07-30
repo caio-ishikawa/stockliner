@@ -56,17 +56,27 @@ const ResultPage = () => {
     const [link, setLink] = useState('')
     const [content, setContent] = useState('')
     const [username, setUsername] = useState('')
+    const [comments, setComments] = useState([])
     var links = []; 
+    var mapReturn;
+    const commentSection = []
 
     useEffect(() => {
         if (searchValue.length > 0) {
+            console.log('SEARCHVALUE ' + searchValue)
             console.log('checking comments')
-            Axios.get('http://localhost:3002/comment_sections', {stock_name: searchValue})
+            Axios.get('http://localhost:3002/comment_sections/' + searchValue)
             .then((res) => {
-                console.log(res)
+                const data = res.data
+                //console.log(data)
+                commentSection.push(data)
+               
+                setComments(data)
             })
+            mapReturn = comments.map((data) => <p>{data}</p>)
         }
     },[])
+
 
     const postComment = () => {
         Axios.post("http://localhost:3002/add_comment", {
@@ -78,7 +88,6 @@ const ResultPage = () => {
             console.log(res)
         })
     }
-
 
     return(
         <MuiThemeProvider theme={theme}>
@@ -97,6 +106,16 @@ const ResultPage = () => {
                     <TextField onChange={(e) => {setContent(e.target.value)}} label="content"/>
                     <TextField onChange={(e) => {setUsername(e.target.value)}} label="username"/>
                     <Button onClick={postComment}>post</Button>
+                    {comments ? 
+                        Object.keys(comments).map((key) => {
+                            return(
+                                <div>
+                                    <p>{comments[key].content}</p>
+                                </div>
+                            )
+                        })
+                        : <p>no comments</p>
+                    }
                 </Grid>
                 <Grid item xs={11} md={6} lg={5}>
                     <GetNews/>
