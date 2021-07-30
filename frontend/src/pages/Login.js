@@ -3,17 +3,19 @@ import { useContext, useState } from 'react'
 import { TextField } from "@material-ui/core"
 import { Button } from "@material-ui/core"
 import { useHistory } from 'react-router'
-import { LoginContext } from '../components/UserContext'
+import { LoginContext, UsernameContext } from '../components/UserContext'
 
 
 const Login = () => {
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
     const [auth, setAuth] = useState(false)
+    const {loginUsername, setLoginUsername} = useContext(UsernameContext)
     const { loggedIn, setLoggedIn } = useContext(LoginContext)
     const history = useHistory()
 
     const login = () => {
+    setLoginUsername(username)
     Axios.post('http://localhost:3002/login', {
         username: username,
         password: password

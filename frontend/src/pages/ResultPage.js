@@ -12,9 +12,11 @@ import Divider from '@material-ui/core/Divider';
 import { useState, useEffect, useContext } from 'react';
 import Axios from 'axios'
 import { SettingsOutlined } from '@material-ui/icons';
-import { LoginContext } from '../components/UserContext'
+import { LoginContext, UsernameContext } from '../components/UserContext'
 import Chat from '../components/Chat'
-import { TextField, Button } from '@material-ui/core'
+import { TextField, Button, Card, CardContent, CardHeader, Paper, CardActions } from '@material-ui/core'
+import AddCommentIcon from '@material-ui/icons/AddComment';
+import { TextRotateUpOutlined } from '@material-ui/icons'
 
 
 const theme = createMuiTheme({
@@ -24,7 +26,6 @@ const theme = createMuiTheme({
         }
     }
 })
-
 
 const styles = makeStyles({
     accordion: {
@@ -44,10 +45,66 @@ const styles = makeStyles({
     logo: {
         marginTop: "0.5%",
         marginRight: "1%"
-    }
+    },
+    username: {
+        width: "20%",
+        textAlign: "left",
+        fontWeight: "bold",
+        marginBottom: "-5%"
+        
+    },
+    content:  {
+        width: "80%",
+        marginLeft: "2%",
+        textAlign: "left",
+        marginBottom: "-5%"
+    },
+    row: {
+        textAlign: "left",
+        width: "90%",
+        margin: "auto"
+    },
+    chatCard: {
+        paddingTop: "1%",
+        paddingBottom: "1%",
+        paddingRight: "1.5%",
+        paddingLeft: "1.5%",
+    },
+    inputDiv: {
+        marginBottom: "3%",
+        maringTop: "15%" 
+    },
+    button: {
+        height: "40px"
+    },
+    chatDiv: {
+        marginTop: "5%"
+    },
+    paperDiv: {
+        marginBottom: "3%",
+        padding: "2%"
+    },
+    titleDiv: {
+        marginBottom: "3%"
+    },
+    commentCard: {
+        marginTop: "3%",
+        height: "54%",
+        backgroundColor: "#FFFFFA",
+        marginBottom: "12%"
+    },
+    textPanel: {
+        minHeight: "62%",
+        overflow: "auto"
+    },
+    gridChat: {
+        marginBottom: "15%"
+    } 
 })
 
 const ResultPage = () => {
+    const {loginUsername, setLoginUsername} = useContext(UsernameContext)
+    console.log('LOGIN USERNAME:' + loginUsername)
     const history = useHistory()
     const value = history.location.state
     const searchValue = value.toUpperCase()
@@ -81,7 +138,7 @@ const ResultPage = () => {
     const postComment = () => {
         Axios.post("http://localhost:3002/add_comment", {
             stock_name: searchValue,
-            username: username,
+            username: loginUsername,
             content:  content
         })
         .then((res) => {
@@ -100,22 +157,33 @@ const ResultPage = () => {
                 </Grid>
             </Grid>
             <Divider className={classes.divider}/>
-            <Grid container spacing={2} justify="center" >
-                <Grid item xs={11} md={6} lg={5}>
+            <Grid container spacing={2} justify="center">
+                <Grid item xs={11} md={6} lg={5}  className={classes.gridChat} >
                     <GetData className={classes.accordion}/>
-                    <TextField onChange={(e) => {setContent(e.target.value)}} label="content"/>
-                    <TextField onChange={(e) => {setUsername(e.target.value)}} label="username"/>
-                    <Button onClick={postComment}>post</Button>
-                    {comments ? 
-                        Object.keys(comments).map((key) => {
-                            return(
-                                <div>
-                                    <p>{comments[key].content}</p>
-                                </div>
-                            )
-                        })
-                        : <p>no comments</p>
-                    }
+                    <Card elevation={6} className={classes.commentCard}>
+                        <CardHeader align="left" title={searchValue + "Chat"}/>
+                        <Divider className={classes.titleDiv}/>
+                        <div className={classes.textPanel}>
+                            {comments ? 
+                                Object.keys(comments).map((key) => {
+                                    return(
+                                        <div className={classes.row}>
+                                            <Paper variant="outlined" className={classes.paperDiv}>
+                                                <Typography className={classes.username}variant="body">{comments[key].username}: </Typography>
+                                                <Typography className={classes.content}variant="body">{comments[key].content}</Typography>
+                                            </Paper>
+                                        </div>
+                                    )
+                                })
+                                : <p>no comments</p>
+                            }
+                        </div>
+                        <Divider className={classes.inputDiv}/>
+                        <div>
+                            <TextField variant="outlined" label="Comment" size="small" onChange={(e) => {setContent(e.target.value)}}/>
+                            <Button variant="outlined" className={classes.button} onClick={postComment}>Post</Button>
+                        </div>
+                    </Card>
                 </Grid>
                 <Grid item xs={11} md={6} lg={5}>
                     <GetNews/>

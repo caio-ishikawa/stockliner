@@ -13,7 +13,7 @@ import {Toolbar, Typography, Container, Grid } from '@material-ui/core'
 import {makeStyles} from "@material-ui/core/styles"; 
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { useContext } from 'react';
-import { LoginContext } from './components/UserContext'
+import { LoginContext, UsernameContext } from './components/UserContext'
 import { useState } from 'react';
 
 const styles = makeStyles({
@@ -41,6 +41,7 @@ const styles = makeStyles({
 function App() {
   const classes = styles()
   const [loggedIn, setLoggedIn] = useState(false)
+  const [loginUsername, setLoginUsername] = useState('')
 
 
   return (
@@ -49,10 +50,12 @@ function App() {
         <NavBar/>
         <Switch>
           <LoginContext.Provider value={{loggedIn, setLoggedIn}}>
-          <Route exact path="/" component={Homepage}/>
-          <Route path="/results" component={ResultPage}/>
-          <Route exact path="/registration" component={Registration}/>
-          <Route exact path='/login' component={Login}/> 
+            <UsernameContext.Provider value={{loginUsername, setLoginUsername}}>
+              <Route exact path="/" component={Homepage}/>
+              <Route path="/results" component={ResultPage}/>
+              <Route exact path="/registration" component={Registration}/>
+              <Route exact path='/login' component={Login}/> 
+            </UsernameContext.Provider>
           </LoginContext.Provider>
         </Switch>
       </Router>
