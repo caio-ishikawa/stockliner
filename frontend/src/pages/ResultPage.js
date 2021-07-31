@@ -71,8 +71,9 @@ const styles = makeStyles({
         paddingLeft: "1.5%",
     },
     inputDiv: {
-        marginBottom: "3%",
-        maringTop: "15%" 
+        marginBottom: "1%",
+        maringTop: "15%",
+
     },
     button: {
         height: "40px"
@@ -89,17 +90,17 @@ const styles = makeStyles({
     },
     commentCard: {
         marginTop: "3%",
-        height: "54%",
         backgroundColor: "#FFFFFA",
-        marginBottom: "12%"
     },
     textPanel: {
-        minHeight: "62%",
-        overflow: "auto"
+        maxHeight: "58%",
+        minHeight: "359px",
+        overflow: "scroll"
     },
-    gridChat: {
-        marginBottom: "15%"
-    } 
+    postDiv: {
+        marginBottom: "1%",
+        marginTop: "1%"
+    }
 })
 
 const ResultPage = () => {
@@ -136,14 +137,25 @@ const ResultPage = () => {
 
 
     const postComment = () => {
-        Axios.post("http://localhost:3002/add_comment", {
-            stock_name: searchValue,
-            username: loginUsername,
-            content:  content
-        })
-        .then((res) => {
-            console.log(res)
-        })
+        const content = document.getElementById('commentPost').value
+        console.log(content)
+        if (loginUsername.length > 0) {
+            Axios.post("http://localhost:3002/add_comment", {
+                stock_name: searchValue,
+                username: loginUsername,
+                content:  content
+            })
+            .then((res) => {
+                Axios.get('http://localhost:3002/comment_sections' + searchValue)
+                .then((data) => {
+                    const comm = res.data
+                    setComments(comm)
+                })
+                console.log(res)
+            })
+        } else {
+            alert('YOU ARE NOT LOGGED IN')
+        }
     }
 
     return(
@@ -161,7 +173,7 @@ const ResultPage = () => {
                 <Grid item xs={11} md={6} lg={5}  className={classes.gridChat} >
                     <GetData className={classes.accordion}/>
                     <Card elevation={6} className={classes.commentCard}>
-                        <CardHeader align="left" title={searchValue + "Chat"}/>
+                        <CardHeader align="left" title={searchValue + "'s Comments"}/>
                         <Divider className={classes.titleDiv}/>
                         <div className={classes.textPanel}>
                             {comments ? 
@@ -178,11 +190,20 @@ const ResultPage = () => {
                                 : <p>no comments</p>
                             }
                         </div>
-                        <Divider className={classes.inputDiv}/>
-                        <div>
-                            <TextField variant="outlined" label="Comment" size="small" onChange={(e) => {setContent(e.target.value)}}/>
-                            <Button variant="outlined" className={classes.button} onClick={postComment}>Post</Button>
-                        </div>
+                        <Divider className={classes.postDiv}/>
+                            {loggedIn? 
+                                <div className={classes.titleDiv}>
+                                    <TextField variant="outlined" label="Comment" size="small" id="commentPost"/>
+                                    <Button variant="outlined" className={classes.button} onClick={postComment}>Post</Button>
+                                </div>
+                                :
+                                <div className={classes.postDiv}>
+                                    <TextField variant="outlined" disabled label="Login required" size="small"/>
+                                    <Button variant="outlined" className={classes.button} disabled>Post</Button>
+                                </div>
+                            }
+                            {/* <TextField variant="outlined" label="Comment" size="small" id="commentPost"/>
+                            <Button variant="outlined" className={classes.button} onClick={postComment}>Post</Button> */}
                     </Card>
                 </Grid>
                 <Grid item xs={11} md={6} lg={5}>

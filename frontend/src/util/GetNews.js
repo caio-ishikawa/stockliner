@@ -21,7 +21,7 @@ const useStyles = makeStyles({
     cardContainer: {
         width: "100%",
         padding: "2%",
-        height: "570px",
+        minHeight: "653px",
         overflow: "auto",
         maxHeight: "600px",
         backgroundColor: "#FFFFFA"
