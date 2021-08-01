@@ -1,7 +1,9 @@
 const express = require('express')
 const mysql = require('mysql')
 const cors = require('cors')
+const bcrypt = require('bcrypt')
 const app = express()
+const saltRounds = 10
 
 app.use(express.json())
 app.use(cors())
@@ -17,8 +19,13 @@ app.post('/signup', (req, res) => {
     const username = req.body.username
     const password = req.body.password
 
-    db.query("INSERT INTO users (username, password) VALUES (?, ?)", [username, password], (err, result) => {
-        console.log(err)
+    bcrypt.hash(password, saltRounds, (err, hash) => {
+        if (err) {
+            console.log(err)
+        }
+        db.query("INSERT INTO users (username, password) VALUES (?, ?)", [username, hash], (err, result) => {
+            console.log(err)
+        })
     })
 })
 
@@ -26,16 +33,22 @@ app.post('/login', (req, res) => {
     const username = req.body.username
     const password = req.body.password
 
-    db.query("SELECT * FROM  users WHERE username = ? AND password = ?", [username, password], (err, result) => {
+    db.query("SELECT * FROM  users WHERE username = ?", [username], (err, result) => {
         if (err) {
             res.send({err: err})
+        } 
+        if (result.length > 0) {
+            bcrypt.compare(password, result[0].password, (err, response) => {
+                if (response) {
+                    res.send(result)
+                } else{
+                    res.send({message: "Invalid Credentials"})
+                }
+            })
         } else {
-            if (result) {
-                res.send(result)
-            } else {
-                res.send({message: "Invalid credentials"})
-            }
+            res.send({message: "User does not exist."})
         }
+        
     })
 })
 

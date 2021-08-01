@@ -47,10 +47,10 @@ function App() {
   return (
     <div className="App">
       <Router>
-        <NavBar/>
         <Switch>
           <LoginContext.Provider value={{loggedIn, setLoggedIn}}>
             <UsernameContext.Provider value={{loginUsername, setLoginUsername}}>
+              <Route exact="randomstringfornavbar" component={NavBar}/>
               <Route exact path="/" component={Homepage}/>
               <Route path="/results" component={ResultPage}/>
               <Route exact path="/registration" component={Registration}/>

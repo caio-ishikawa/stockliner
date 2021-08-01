@@ -93,9 +93,9 @@ const styles = makeStyles({
         backgroundColor: "#FFFFFA",
     },
     textPanel: {
-        maxHeight: "58%",
+        maxHeight: "359px",
         minHeight: "359px",
-        overflow: "scroll"
+        overflowY: "scroll"
     },
     postDiv: {
         marginBottom: "1%",
@@ -119,7 +119,13 @@ const ResultPage = () => {
     var mapReturn;
     const commentSection = []
 
+
+    var messageDiv = document.getElementById('messageDiv')
+
     useEffect(() => {
+        if (messageDiv) {
+            messageDiv.scrollIntoView(false)
+        }
         if (searchValue.length > 0) {
             console.log('SEARCHVALUE ' + searchValue)
             console.log('checking comments')
@@ -146,10 +152,12 @@ const ResultPage = () => {
                 content:  content
             })
             .then((res) => {
-                Axios.get('http://localhost:3002/comment_sections' + searchValue)
+                Axios.get('http://localhost:3002/comment_sections/' + searchValue)
                 .then((data) => {
                     const comm = res.data
                     setComments(comm)
+                    console.log(comments)
+                    window.location.reload()
                 })
                 console.log(res)
             })
@@ -175,7 +183,7 @@ const ResultPage = () => {
                     <Card elevation={6} className={classes.commentCard}>
                         <CardHeader align="left" title={searchValue + "'s Comments"}/>
                         <Divider className={classes.titleDiv}/>
-                        <div className={classes.textPanel}>
+                        <div className={classes.textPanel} id="messageDiv">
                             {comments ? 
                                 Object.keys(comments).map((key) => {
                                     return(

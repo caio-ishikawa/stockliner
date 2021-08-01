@@ -4,6 +4,8 @@ import Typography  from "@material-ui/core/Typography";
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import {useState} from 'react'
+import { LoginContext, UsernameContext } from "../components/UserContext";
+import { useContext } from "react";
 
 
 const styles = makeStyles({
@@ -21,10 +23,12 @@ const styles = makeStyles({
 
 
 const Homepage = () => {
+    const { loginUsername, setLoginUsername } = useContext(UsernameContext)
+    const { loggedIn, setLoggedIn} = useContext(LoginContext)
     const classes = styles()
     const history = useHistory()
-    const username = history.location.state
-    console.log(username)
+    const userusername = history.location.state
+    console.log(userusername)
     const [ticker, setTicker] = useState('')
 
     const routeChange = () => {
@@ -40,11 +44,20 @@ const Homepage = () => {
         console.log(e.target.value)
     }
 
+    console.log("log in status homepage: " + loggedIn)
+
 
     return(
         <div>
             <div className={classes.title}>
                 <Typography variant="h2">StockLiner</Typography>
+                {loginUsername ? 
+                    <div>
+                        <Typography variant="subtitle">Welcome, {loginUsername}</Typography>
+                    </div>
+                    :
+                    <p></p>
+                }
             </div>
             <form>
                 <TextField onChange={handleChange} className={classes.input} id="ticker" label="TSLA, IBM, AAPL..."/>
