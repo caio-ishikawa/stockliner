@@ -1,6 +1,6 @@
 # StockLiner 
 
-(StockLiner)[https://stockliner-frontend.herokuapp.com/#/] is a website that allows users to get charts, headlines, and financial statistics for any publically traded company, as well as communicate in each company's separate comment section.
+[StockLiner](https://stockliner-frontend.herokuapp.com/#/) is a website that allows users to get charts, headlines, and financial statistics for any publically traded company, as well as communicate in each company's separate comment section.
 
 
 
